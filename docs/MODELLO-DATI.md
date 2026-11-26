@@ -41,3 +41,58 @@ Prima bozza concettuale. Non costituisce ancora uno schema database definitivo.
 - Come si gestiscono materiali e ricambi riservati a una specifica lavorazione?
 - Quali dati del cliente sono visibili al laboratorio?
 - Quali informazioni devono essere conservate nello storico e per quanto tempo?
+
+
+
+```plantuml
+
+@startuml
+package infrastruttura{
+  [Organizzazione] --> [Sede]
+  [Sede] --> [TipologiaSede]
+
+}
+
+package GDPR{
+  [Persona]-->[Utente]
+  [Utente] --> [Ruolo]
+  [Persona] --> [Cliente]
+  [Sede] --> [Utente]
+  [Sede] --> [Cliente]
+}
+
+package main{
+[Pratica] --> [Oggetto]
+[Pratica] --> [Sede]
+[Cliente] -->[Pratica]
+[Oggetto] --> [Preventivo]
+[Oggetto] --> [Allegato]
+[Preventivo] --> [Sede]
+}
+
+package poste{
+[Sede] -->[Spedizione]
+[Spedizione] --> [OggettiSpedizione]
+[OggettiSpedizione] -- [Oggetto]
+[Spedizione] --> [StatoSpedizione]
+}
+
+package TULPS{
+[Registro] --> [LineaRegistro]
+[LineaRegistro] --> [Oggetto]
+[LineaRegistro] --> [Spedizione]
+}
+
+package Labs{
+[Operazione]-->[CatalogoOperazioni]
+Operazione --> Preventivo
+Operazione --> [Lavorazione]
+[Lavorazione] --> [Assegnazione]
+[Assegnazione] --> [Preventivo]
+[Operazione]<-- [Attrezzatura]
+[Lavorazione] <-- [Ricambio]
+[MovimentoInventario] --> [Ricambio]
+[MovimentoInventario] --> [Spedizione]
+}
+@enduml
+```
